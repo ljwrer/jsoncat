@@ -91,10 +91,22 @@ class ObjJsonCat extends JsonCat {
   }
 }
 
-const cats = [new NullJsonCat(), new BooleanJsonCat(), new NumberJsonCat(), new StringJsonCat(), new ArrayJsonCat(), new ObjJsonCat(), new UndefinedJsonCat()]
+function * cats () {
+  yield new NullJsonCat()
+  yield new BooleanJsonCat()
+  yield new NumberJsonCat()
+  yield new StringJsonCat()
+  yield new ArrayJsonCat()
+  yield new ObjJsonCat()
+  yield new UndefinedJsonCat()
+}
 
 const getCat = (val, parent = null) => {
-  return cats.find(cat => cat.is(val) && cat.valid(val, parent))
+  for (const cat of cats()) {
+    if (cat.is(val) && cat.valid(val, parent)) {
+      return cat
+    }
+  }
 }
 
 export const stringify = (val, parent = null, cat = null) => {
